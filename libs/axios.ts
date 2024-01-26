@@ -16,6 +16,19 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
+    console.log(error);
+    return Promise.reject(error);
+  },
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      jsCookie.remove("token");
+      window.location.href = "/login";
+    }
+
     return Promise.reject(error);
   },
 );

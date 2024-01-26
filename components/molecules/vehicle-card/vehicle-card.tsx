@@ -26,7 +26,7 @@ export default function VehicleCard({
         <div className="flex w-full items-center justify-between gap-3">
           <h2 className="line-clamp-1 flex-1">{name}</h2>
           {admin && (
-            <span className="flex gap-3">
+            <span className="my-2 flex gap-3">
               <Button
                 onClick={() =>
                   admin.edit({ brand, id, name, images, price, model })

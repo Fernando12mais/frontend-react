@@ -2,10 +2,10 @@ export default function noImage() {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="100%"
-      height="100%"
+      width="80%"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="mx-auto"
     >
       <title>Sem foto</title>
       <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

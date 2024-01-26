@@ -6,7 +6,6 @@ import ImageGallery from "react-image-gallery";
 import { Button, Card, CardBody, Chip, Skeleton } from "@nextui-org/react";
 import { formatCurrency } from "@/utils/money";
 import { useRouter } from "next/navigation";
-import NoImage from "@/components/icons/no-image";
 
 export default function VehicleId({ params }: { params: { id: string } }) {
   const { data } = useVehicle(params.id);
@@ -20,7 +19,7 @@ export default function VehicleId({ params }: { params: { id: string } }) {
         </Button>
 
         <Card className="mx-auto max-w-screen-lg">
-          <Skeleton isLoaded={!!data} className="min-h-[500px]">
+          <Skeleton isLoaded={!!data} className="lg:min-h-[500px]">
             <CardBody>
               {!!data?.images.length && (
                 <ImageGallery
@@ -30,7 +29,9 @@ export default function VehicleId({ params }: { params: { id: string } }) {
                       thumbnail: image.url,
                     })) || []
                   }
-                  thumbnailPosition="right"
+                  thumbnailPosition={
+                    window.innerWidth > 640 ? "right" : "bottom"
+                  }
                   showBullets
                   showNav
                   showPlayButton={false}

@@ -6,6 +6,8 @@ import { ReactNode } from "react";
 export default async function Layout(props: { children: ReactNode }) {
   const token = cookies().get("token");
 
+  if (!token) return redirect("/login");
+
   const api = axios.create({
     baseURL: "http://localhost:8000",
     headers: {

@@ -127,7 +127,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
     await mutate();
   });
 
-  const skeletons = Array.from({ length: 8 });
+  const skeletons = Array.from({ length: 6 });
 
   useEffect(() => {
     replace(selectedVehicle?.images || []);
@@ -140,6 +140,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           setSearch(value);
         }}
       />
+
       <div className="flex flex-col gap-3">
         {admin && (
           <Button
@@ -153,7 +154,9 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
             Adicionar veículo
           </Button>
         )}
-        <div className="grid gap-4 lg:grid-cols-4">
+
+        {!data?.length && <p className="my-4">Nenhum resultado encontrado.</p>}
+        <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {data?.map((card, index) => (
             <VehicleCard
               {...card}
@@ -177,7 +180,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           {!data &&
             skeletons.map((skeleton, index) => (
               <Skeleton
-                className="h-full min-h-[450px] w-full  rounded-lg"
+                className="h-full min-h-[100px] w-full  rounded-lg"
                 key={index}
               />
             ))}
