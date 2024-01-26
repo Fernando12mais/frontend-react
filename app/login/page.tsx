@@ -4,9 +4,10 @@ import { LoginSchema, loginSchema } from "@/validations/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
-import { publicApi } from "@/libs/axios";
+import { api } from "@/libs/axios";
 import { Button, Input, Card, CardBody } from "@nextui-org/react";
-import { Spinner } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import jsCookie from "js-cookie";
 export default function Login() {
   const {
     register,
@@ -17,6 +18,8 @@ export default function Login() {
     resolver: zodResolver(loginSchema),
   });
 
+  const router = useRouter();
+
   const fetcher = async (
     url: string,
     { arg }: { arg: { email: string; password: string } },
@@ -25,7 +28,7 @@ export default function Login() {
 
     formData.append("username", arg.email);
     formData.append("password", arg.password);
-    return await publicApi
+    return await api
       .post(url, formData)
       .then((response) => {
         console.log(response.data);
@@ -63,7 +66,9 @@ export default function Login() {
     const response = await trigger(data);
 
     if (response?.access_token) {
-      localStorage.setItem("token", response?.access_token);
+      jsCookie.set("token", response?.access_token);
+
+      router.push("/admin");
     }
   });
 
@@ -80,7 +85,7 @@ export default function Login() {
               errorMessage={errors.email?.message}
               placeholder="Email de administrador"
               isInvalid={!!errors.email?.message}
-              defaultValue="fernando@gmail.com"
+              defaultValue="admin@email.com"
             />
             <Input
               isInvalid={!!errors.email?.message}
@@ -91,7 +96,7 @@ export default function Login() {
               type="password"
               errorMessage={errors.password?.message}
               placeholder="Sua senha por favor..."
-              defaultValue="fernando"
+              defaultValue={"@admin"}
             />
             <Button isLoading={isMutating} type="submit" color="primary">
               {!isMutating ? "Entrar" : "Carregando ..."}

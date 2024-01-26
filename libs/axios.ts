@@ -1,14 +1,13 @@
 import axios from "axios";
+import jsCookie from "js-cookie";
 
-const publicApi = axios.create({ baseURL: "http://localhost:8000" });
-
-const privateApi = axios.create({
+const api = axios.create({
   baseURL: "http://localhost:8000",
 });
 
-privateApi.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = jsCookie.get("token");
 
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
@@ -21,4 +20,4 @@ privateApi.interceptors.request.use(
   },
 );
 
-export { publicApi, privateApi };
+export { api };

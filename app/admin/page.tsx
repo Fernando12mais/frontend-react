@@ -5,6 +5,7 @@ export default function Admin() {
     <main className="min-h-screen text-center">
       <section>
         <h1 className="mb-6 text-5xl">Painel do admin</h1>
+
         <VehicleCards admin />
       </section>
     </main>

@@ -4,7 +4,7 @@ export type VehicleCardProps = {
   brand: string;
   model: string;
   name: string;
-  images: { url: string; id: number }[];
+  images: { url: string; id: number; file_id: string }[];
   admin?: {
     delete: (VehicleCardProps: Omit<VehicleCardProps, "admin">) => void;
     edit: (VehicleCardProps: Omit<VehicleCardProps, "admin">) => void;

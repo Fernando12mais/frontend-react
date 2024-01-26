@@ -3,6 +3,7 @@ import { VehicleCardProps } from "./types";
 import { Link, Image } from "@nextui-org/react";
 import Pencil from "@/components/icons/pencil";
 import Trash from "@/components/icons/trash";
+import NoImage from "@/components/icons/no-image";
 
 export default function VehicleCard({
   brand,
@@ -56,17 +57,21 @@ export default function VehicleCard({
             </span>
           )}
         </div>
-        <Link href={`/vehicle/${id}`} className="my-3">
-          <Image
-            src={images[0]?.url}
-            alt="Foto do veículo"
-            width={600}
-            height={600}
-            className="rounded"
-          />
+        <Link href={`/vehicle/${id}`} className="my-auto">
+          {images[0]?.url ? (
+            <Image
+              src={images[0]?.url}
+              alt="Foto do veículo"
+              width={600}
+              height={600}
+              className="h-full w-full rounded"
+            />
+          ) : (
+            <NoImage />
+          )}
         </Link>
 
-        <ul className="flex flex-wrap gap-2">
+        <ul className="my-4 flex flex-wrap gap-2">
           <Chip variant="bordered" as="li" color="success" size="lg">
             {currency.format(price)}
           </Chip>
@@ -77,7 +82,7 @@ export default function VehicleCard({
             {model}
           </Chip>
         </ul>
-        <Button fullWidth className="mt-3" color="success">
+        <Button fullWidth color="success">
           Comprar
         </Button>
       </CardBody>

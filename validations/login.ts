@@ -5,11 +5,11 @@ export const loginSchema = z.object({
     .string()
     .min(1, "Email é obrigatório")
     .email("Email inválido")
-    .default("fernando@gmail.com"),
+    .default("admin@email.com"),
   password: z
     .string()
     .min(6, "A senha deve conter no mínimo 6 caracteres")
-    .default("fernando"),
+    .default("@admin"),
 });
 
 export type LoginSchema = z.infer<typeof loginSchema>;

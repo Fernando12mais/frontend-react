@@ -1,18 +1,28 @@
-"use client";
-import { privateApi } from "@/libs/axios";
-import { useRouter } from "next/navigation";
+import { cookies } from "next/headers";
+import axios from "axios";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import useSWR from "swr";
 
-export default function Layout(props: { children: ReactNode }) {
-  const { data, isLoading } = useSWR("/auth/is-authenticated", (url) =>
-    privateApi.get(url).then((res) => res.data),
-  );
-  const { push } = useRouter();
+export default async function Layout(props: { children: ReactNode }) {
+  const token = cookies().get("token");
 
-  // if (isLoading) return <div>loading...</div>;
+  const api = axios.create({
+    baseURL: "http://localhost:8000",
+    headers: {
+      Authorization: `bearer ${token?.value}`,
+    },
+  });
 
-  // if (!data) return <>{push("/login")}</>;
+  const response = await api
+    .get("/auth/is-authenticated")
+    .then((res) => {
+      return res;
+    })
+    .catch((err) => {
+      return err.response;
+    });
 
-  return <main>{props.children}</main>;
+  if (response.status !== 200) return redirect("/login");
+
+  return <>{props.children}</>;
 }
