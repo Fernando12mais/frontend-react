@@ -1,13 +1,12 @@
 "use client";
 
-import Card from "@/components/molecules/card/card";
 import { LoginSchema, loginSchema } from "@/validations/login";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import useSWRMutation from "swr/mutation";
-import { api } from "@/libs/axios";
-import { Button, Input } from "@nextui-org/react";
-import { useEffect } from "react";
+import { publicApi } from "@/libs/axios";
+import { Button, Input, Card, CardBody } from "@nextui-org/react";
+import { Spinner } from "@nextui-org/react";
 export default function Login() {
   const {
     register,
@@ -26,9 +25,13 @@ export default function Login() {
 
     formData.append("username", arg.email);
     formData.append("password", arg.password);
-    return api
+    return await publicApi
       .post(url, formData)
-      .then((response) => response.data)
+      .then((response) => {
+        console.log(response.data);
+
+        return response.data;
+      })
       .catch((error) => {
         if (error.status == 500) {
           setError("email", {
@@ -54,37 +57,48 @@ export default function Login() {
       });
   };
 
-  const { trigger } = useSWRMutation("/auth/login", fetcher);
+  const { trigger, isMutating } = useSWRMutation("/auth/login", fetcher);
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  const onSubmit = handleSubmit(async (data) => {
+    const response = await trigger(data);
 
-    trigger(data).then((response) => {
-      console.log({ response });
-      localStorage.setItem("token", response.access_token);
-    });
+    if (response?.access_token) {
+      localStorage.setItem("token", response?.access_token);
+    }
   });
 
   return (
     <main className="flex min-h-screen items-center justify-center">
-      <form onSubmit={onSubmit} className="w-full">
-        <Card className="mx-auto flex max-w-96 flex-col items-center gap-4">
-          <Input
-            {...register("email")}
-            label="Email:"
-            errorMessage={errors.email?.message}
-          />
-          <Input
-            {...register("password")}
-            label="Senha:"
-            type="password"
-            errorMessage={errors.password?.message}
-          />
-          <Button type="submit" color="primary">
-            Entrar
-          </Button>
-        </Card>
-      </form>
+      <Card className="mx-auto max-w-96">
+        <form onSubmit={onSubmit}>
+          <CardBody className="grid gap-4">
+            <Input
+              size="lg"
+              isRequired
+              {...register("email")}
+              label="Email:"
+              errorMessage={errors.email?.message}
+              placeholder="Email de administrador"
+              isInvalid={!!errors.email?.message}
+              defaultValue="fernando@gmail.com"
+            />
+            <Input
+              isInvalid={!!errors.email?.message}
+              size="lg"
+              isRequired
+              {...register("password")}
+              label="Senha:"
+              type="password"
+              errorMessage={errors.password?.message}
+              placeholder="Sua senha por favor..."
+              defaultValue="fernando"
+            />
+            <Button isLoading={isMutating} type="submit" color="primary">
+              {!isMutating ? "Entrar" : "Carregando ..."}
+            </Button>
+          </CardBody>
+        </form>
+      </Card>
     </main>
   );
 }
