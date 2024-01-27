@@ -1,3 +1,4 @@
+import imageCompression from "browser-image-compression";
 import React, { ReactNode } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -11,7 +12,11 @@ export function FileUploader(props: {
       "image/*": [],
     },
     multiple: false,
-    onDrop: (files) => {
+    onDrop: async (files) => {
+      const compressedFile = await imageCompression(files[0], {
+        maxSizeMB: 0.3,
+        alwaysKeepResolution: true,
+      });
       const reader = new FileReader();
       reader.onloadend = () => {
         const result = reader.result as string;
@@ -19,7 +24,7 @@ export function FileUploader(props: {
         props.onFileLoaded(result);
       };
 
-      if (files?.length) reader.readAsDataURL(files[0]);
+      if (compressedFile) reader.readAsDataURL(compressedFile);
     },
   });
 
