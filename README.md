@@ -1,7 +1,7 @@
 
 # Frontend React
 
-Um projeto para integrar com minha [API](https://github.com/Fernando12mais/vehicles/tree/main) criada em Python.
+Um projeto para integrar com minha [API](https://github.com/Fernando12mais/vehicles/tree/main) criada em Python. (Lembre-se de rodar a API antes deste projeto, pois ele depende dela pra funcionar corretamente.)
 
 
 
