@@ -191,7 +191,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           {!data &&
             skeletons.map((skeleton, index) => (
               <Skeleton
-                className="h-full min-h-[100px] w-full rounded-lg  lg:min-h-96"
+                className="h-full  min-h-96 w-full  rounded-lg"
                 key={index}
               />
             ))}
