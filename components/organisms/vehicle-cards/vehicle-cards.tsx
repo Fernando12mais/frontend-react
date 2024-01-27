@@ -19,7 +19,7 @@ import {
   Skeleton,
 } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import { VehicleCardsProps } from "./types";
+import { VehicleCardsProps, Filter as FilterType } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
 import {
@@ -30,6 +30,7 @@ import {
 import useSWRMutation from "swr/mutation";
 import { api } from "@/libs/axios";
 import Search from "./search";
+import Filter from "./filter";
 type ModalType = "edit" | "delete" | "add";
 
 type ModalInfo = {
@@ -39,12 +40,17 @@ type ModalInfo = {
 };
 export function VehicleCards({ admin }: VehicleCardsProps) {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState<FilterType>();
   const { data, mutate } = useVehicles(search);
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [modalType, setModalType] = useState<ModalType>("edit");
   const [selectedVehicle, setSelectedVehicle] =
     useState<Omit<VehicleCardProps, "admin">>();
+
+  const filteredData = data?.filter((value) =>
+    filter ? value.price > filter.min && value.price < filter.max : true,
+  );
 
   const getFetcher = () => {
     if (modalType == "edit") {
@@ -67,6 +73,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
         api.post(url, arg).then((res) => res.data),
     };
   };
+
   const { url, fetcher } = getFetcher();
   const { trigger, isMutating: isLoading } = useSWRMutation(url, fetcher);
 
@@ -75,6 +82,8 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
     setModalType(type);
     reset();
   };
+
+  console.log(filter);
 
   const {
     register,
@@ -140,6 +149,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           setSearch(value);
         }}
       />
+      <Filter onFilterChange={(filter) => setFilter(filter)} />
 
       <div className="flex flex-col gap-3">
         {admin && (
@@ -155,9 +165,11 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           </Button>
         )}
 
-        {!data?.length && <p className="my-4">Nenhum resultado encontrado.</p>}
+        {!filteredData?.length && (
+          <p className="my-4">Nenhum resultado encontrado.</p>
+        )}
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {data?.map((card, index) => (
+          {filteredData?.map((card, index) => (
             <VehicleCard
               {...card}
               admin={

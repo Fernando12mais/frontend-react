@@ -5,3 +5,9 @@ export type VehicleCardsProps = {
 export type SearchProps = {
   onSearchSubmit: (value: string) => void;
 };
+
+export type Filter = { min: number; max: number };
+
+export type FilterProps = {
+  onFilterChange: (filter: Filter) => void;
+};
