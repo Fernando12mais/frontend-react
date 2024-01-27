@@ -13,14 +13,14 @@ export default function Admin() {
     Cookies.remove("token");
   };
   return (
-    <main className="min-h-screen text-center">
+    <main className="min-h-screen">
       <section>
         <div className="flex justify-end">
           <Button onClick={logout} size="lg" color="primary">
             Sair
           </Button>
         </div>
-        <h1 className="mb-6 text-5xl">Painel do admin</h1>
+        <h1 className="mb-6 text-center text-5xl">Painel do admin</h1>
 
         <VehicleCards admin />
       </section>

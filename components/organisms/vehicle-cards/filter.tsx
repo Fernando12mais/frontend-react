@@ -29,7 +29,7 @@ export default function Filter({ onFilterChange }: FilterProps) {
 
   return (
     <Popover>
-      <PopoverTrigger className="my-4 text-start">
+      <PopoverTrigger className="my-4">
         <Button color="primary">Filtros</Button>
       </PopoverTrigger>
       <PopoverContent>

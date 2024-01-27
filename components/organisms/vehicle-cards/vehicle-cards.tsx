@@ -41,7 +41,7 @@ type ModalInfo = {
 export function VehicleCards({ admin }: VehicleCardsProps) {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<FilterType>();
-  const { data, mutate } = useVehicles(search);
+  const { data, mutate, isLoading: isGettingVehicles } = useVehicles(search);
 
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [modalType, setModalType] = useState<ModalType>("edit");
@@ -164,8 +164,8 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           </Button>
         )}
 
-        {!filteredData?.length && (
-          <p className="my-4">Nenhum resultado encontrado.</p>
+        {!filteredData?.length && !isGettingVehicles && (
+          <p className="my-4 text-center">Nenhum resultado encontrado.</p>
         )}
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredData?.map((card, index) => (
@@ -191,7 +191,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           {!data &&
             skeletons.map((skeleton, index) => (
               <Skeleton
-                className="h-full min-h-[100px] w-full  rounded-lg"
+                className="h-full min-h-[100px] w-full rounded-lg  lg:min-h-96"
                 key={index}
               />
             ))}
