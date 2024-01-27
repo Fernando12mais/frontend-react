@@ -83,8 +83,6 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
     reset();
   };
 
-  console.log(filter);
-
   const {
     register,
     formState: { errors },
@@ -149,6 +147,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
           setSearch(value);
         }}
       />
+
       <Filter onFilterChange={(filter) => setFilter(filter)} />
 
       <div className="flex flex-col gap-3">
