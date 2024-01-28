@@ -16,7 +16,7 @@ export default function Admin() {
     <main className="min-h-screen">
       <section>
         <div className="flex justify-end">
-          <Button onClick={logout} size="lg" color="primary">
+          <Button data-cy="logout" onClick={logout} size="lg" color="primary">
             Sair
           </Button>
         </div>

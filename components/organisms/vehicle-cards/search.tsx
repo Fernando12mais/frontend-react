@@ -22,6 +22,7 @@ export default function Search({ onSearchSubmit }: SearchProps) {
           <Card>
             <CardBody>
               <Input
+                data-cy="search"
                 {...register("search")}
                 type="search"
                 placeholder="Busque por marca,modelo,ano"

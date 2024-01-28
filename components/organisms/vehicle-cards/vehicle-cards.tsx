@@ -31,6 +31,7 @@ import useSWRMutation from "swr/mutation";
 import { api } from "@/libs/axios";
 import Search from "./search";
 import Filter from "./filter";
+import { getFilteredVehicles } from "./utils";
 type ModalType = "edit" | "delete" | "add";
 
 type ModalInfo = {
@@ -48,9 +49,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
   const [selectedVehicle, setSelectedVehicle] =
     useState<Omit<VehicleCardProps, "admin">>();
 
-  const filteredData = data?.filter((value) =>
-    filter ? value.price > filter.min && value.price < filter.max : true,
-  );
+  const filteredData = filter ? getFilteredVehicles(data || [], filter) : data;
 
   const getFetcher = () => {
     if (modalType == "edit") {
@@ -153,6 +152,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
       <div className="flex flex-col gap-3">
         {admin && (
           <Button
+            data-cy="add-vehicle"
             onClick={() => {
               onOpenModal("add");
               setSelectedVehicle(undefined);
@@ -165,7 +165,9 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
         )}
 
         {!filteredData?.length && !isGettingVehicles && (
-          <p className="my-4 text-center">Nenhum resultado encontrado.</p>
+          <p data-cy="no-results" className="my-4 text-center">
+            Nenhum resultado encontrado.
+          </p>
         )}
         <div className="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {filteredData?.map((card, index) => (
@@ -209,24 +211,28 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
                 {(modalType == "add" || modalType == "edit") && (
                   <>
                     <Input
+                      data-cy="name"
                       errorMessage={errors.name?.message}
                       {...register("name")}
                       defaultValue={selectedVehicle?.name}
                       label="Nome"
                     />
                     <Input
+                      data-cy="brand"
                       errorMessage={errors.brand?.message}
                       {...register("brand")}
                       defaultValue={selectedVehicle?.brand}
                       label="Marca"
                     />
                     <Input
+                      data-cy="model"
                       errorMessage={errors.model?.message}
                       {...register("model")}
                       defaultValue={selectedVehicle?.model}
                       label="Modelo"
                     />
                     <Input
+                      data-cy="price"
                       errorMessage={errors.price?.message}
                       {...register("price")}
                       defaultValue={selectedVehicle?.price.toString()}
@@ -284,6 +290,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
 
               <ModalFooter>
                 <Button
+                  data-cy="cancel"
                   isLoading={isLoading}
                   color={modalType == "delete" ? "primary" : "danger"}
                   onPress={onClose}
@@ -291,6 +298,7 @@ export function VehicleCards({ admin }: VehicleCardsProps) {
                   Cancelar
                 </Button>
                 <Button
+                  data-cy="submit"
                   color={modalType != "delete" ? "primary" : "danger"}
                   isLoading={isLoading}
                   type="submit"

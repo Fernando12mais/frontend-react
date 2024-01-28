@@ -24,7 +24,8 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    if (!jsCookie.get("token") || !error.response) return Promise.reject(error);
+    if (error.response.status === 401) {
       jsCookie.remove("token");
       window.location.href = "/login";
     }

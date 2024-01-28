@@ -24,10 +24,13 @@ export default function VehicleCard({
     <Card className="light">
       <CardBody className="flex flex-col items-center justify-center">
         <div className="flex w-full items-center justify-between gap-3">
-          <h2 className="line-clamp-1 flex-1">{name}</h2>
+          <h2 data-cy={`vehicle-name-${id}`} className="line-clamp-1 flex-1">
+            {name}
+          </h2>
           {admin && (
             <span className="my-2 flex gap-3">
               <Button
+                data-cy={`edit-vehicle-${id}`}
                 onClick={() =>
                   admin.edit({ brand, id, name, images, price, model })
                 }
@@ -38,6 +41,7 @@ export default function VehicleCard({
                 <Pencil />
               </Button>
               <Button
+                data-cy={`delete-vehicle-${id}`}
                 onClick={() =>
                   admin.delete({
                     brand,
@@ -57,7 +61,11 @@ export default function VehicleCard({
             </span>
           )}
         </div>
-        <Link href={`/vehicle/${id}`} className="my-auto">
+        <Link
+          data-cy={`vehicle-${id}`}
+          href={`/vehicle/${id}`}
+          className="my-auto"
+        >
           {images[0]?.url ? (
             <Image
               src={images[0]?.url}
@@ -72,13 +80,19 @@ export default function VehicleCard({
         </Link>
 
         <ul className="my-4 flex flex-wrap gap-2">
-          <Chip variant="bordered" as="li" color="success" size="lg">
+          <Chip
+            data-cy={`vehicle-price-${id}`}
+            variant="bordered"
+            as="li"
+            color="success"
+            size="lg"
+          >
             {currency.format(price)}
           </Chip>
-          <Chip as="li" color="primary">
+          <Chip data-cy={`vehicle-brand-${id}`} as="li" color="primary">
             {brand}
           </Chip>
-          <Chip as="li" color="default">
+          <Chip data-cy={`vehicle-model-${id}`} as="li" color="default">
             {model}
           </Chip>
         </ul>

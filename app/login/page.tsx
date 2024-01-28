@@ -45,18 +45,14 @@ export default function Login() {
             message:
               "Desculpe, mas ocorreu um erro em nossos servidores, tente novamente mais tarde",
           });
-
           return;
         }
-
         setError("email", {
-          message: error.response.data.detail,
+          message: error.response.data?.detail,
         });
         setError("password", {
-          message: error.response.data.detail,
+          message: error.response.data?.detail,
         });
-
-        console.log();
       });
   };
 
@@ -64,10 +60,8 @@ export default function Login() {
 
   const onSubmit = handleSubmit(async (data) => {
     const response = await trigger(data);
-
     if (response?.access_token) {
       jsCookie.set("token", response?.access_token);
-
       router.push("/admin");
     }
   });
@@ -78,6 +72,7 @@ export default function Login() {
         <form onSubmit={onSubmit}>
           <CardBody className="grid gap-4">
             <Input
+              data-cy="email"
               size="lg"
               isRequired
               {...register("email")}
@@ -88,6 +83,7 @@ export default function Login() {
               defaultValue="admin@email.com"
             />
             <Input
+              data-cy="password"
               isInvalid={!!errors.email?.message}
               size="lg"
               isRequired
@@ -98,7 +94,12 @@ export default function Login() {
               placeholder="Sua senha por favor..."
               defaultValue={"@admin"}
             />
-            <Button isLoading={isMutating} type="submit" color="primary">
+            <Button
+              data-cy="submit"
+              isLoading={isMutating}
+              type="submit"
+              color="primary"
+            >
               {!isMutating ? "Entrar" : "Carregando ..."}
             </Button>
           </CardBody>

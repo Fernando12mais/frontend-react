@@ -7,6 +7,7 @@ export default function Home() {
       <section>
         <div className="flex justify-end">
           <Button
+            data-cy="go-to-login"
             href="/login"
             as={Link}
             size="lg"

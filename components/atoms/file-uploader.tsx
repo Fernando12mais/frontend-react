@@ -30,7 +30,7 @@ export function FileUploader(props: {
 
   return (
     <div {...getRootProps({ className: "dropzone" })}>
-      <input {...getInputProps()} />
+      <input data-cy="add-image" {...getInputProps()} />
       {props.children}
     </div>
   );

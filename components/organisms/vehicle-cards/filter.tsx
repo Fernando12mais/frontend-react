@@ -13,29 +13,26 @@ import {
 } from "@nextui-org/react";
 import { useState } from "react";
 import { FilterProps } from "./types";
+import { filterValues } from "./utils";
 
-const values = Array.from({ length: 30 }).map((value, index) => ({
-  label: formatCurrency(10000 * (index + 1)),
-  value: 10000 * (index + 1),
-}));
-
-const maxValue = values.at(-1)?.value as number;
+const maxValue = filterValues.at(-1)?.value as number;
 
 export default function Filter({ onFilterChange }: FilterProps) {
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(maxValue);
 
-  const maxValues = values.filter((value) => value.value > min);
+  const maxValues = filterValues.filter((value) => value.value > min);
 
   return (
     <Popover>
-      <PopoverTrigger className="my-4">
+      <PopoverTrigger className="my-4" data-cy="filter-trigger">
         <Button color="primary">Filtros</Button>
       </PopoverTrigger>
       <PopoverContent>
         <Card className="flex max-w-96 flex-row flex-wrap">
           <CardBody>
             <Select
+              data-cy="filter-from"
               selectedKeys={min ? [min.toString()] : []}
               onChange={(e) => {
                 const value = Number(e.target.value);
@@ -50,13 +47,16 @@ export default function Filter({ onFilterChange }: FilterProps) {
               label="De"
               placeholder="Filtros por preço"
             >
-              {values.map(({ label, value }) => (
-                <SelectItem key={value}>{label}</SelectItem>
+              {filterValues.map(({ label, value }, index) => (
+                <SelectItem data-cy={`filter-from-option-${index}`} key={value}>
+                  {label}
+                </SelectItem>
               ))}
             </Select>
           </CardBody>
           <CardBody>
             <Select
+              data-cy="filter-to"
               selectedKeys={max && max > min ? [max.toString()] : []}
               onChange={(e) => {
                 setMax(Number(e.target.value));
@@ -65,14 +65,17 @@ export default function Filter({ onFilterChange }: FilterProps) {
               label="Até"
               placeholder="Filtros por preço"
             >
-              {maxValues.map(({ label, value }) => (
-                <SelectItem key={value}>{label}</SelectItem>
+              {maxValues.map(({ label, value }, index) => (
+                <SelectItem data-cy={`filter-to-option-${index}`} key={value}>
+                  {label}
+                </SelectItem>
               ))}
             </Select>
           </CardBody>
 
           <CardBody>
             <Button
+              data-cy="filter-apply"
               onClick={() => onFilterChange({ min, max })}
               color="primary"
             >
