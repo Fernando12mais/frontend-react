@@ -50,4 +50,27 @@ Dentro do terminal, rode o seguinte comando
 
 
 Seu projeto estará rodando em http://localhost:3000
+
+## Testando o projeto
+
+### Testando pela GUI
+
+Para abrir o cypress e ver os testes sendo executados, execute o seguinte comando:
+
+```bash
+  npm run test:open 
+
+```
+
+### Testando pelo terminal
+
+Para excutar todos os testes via terminal, execute o seguinte comando:
+
+```bash
+  npm run test:run 
+
+```
+
+
+![image](https://github.com/Fernando12mais/frontend-react/assets/86564450/faf2d82d-ac87-4f4b-a374-282b39151d9c)
     
